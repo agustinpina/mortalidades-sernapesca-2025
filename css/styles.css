@@ -288,6 +288,7 @@ body {
     margin-bottom: var(--spacing-lg);
     padding-bottom: var(--spacing-md);
     border-bottom: 2px solid var(--color-border);
+    gap: var(--spacing-md);
 }
 
 .panel-header h3 {
@@ -295,41 +296,20 @@ body {
     font-weight: 700;
     letter-spacing: 0.05em;
     color: var(--color-text-secondary);
+    flex: 1;
+    text-align: center;
 }
 
-.panel-close {
-    display: block;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--color-text-secondary);
-    padding: 0;
-    width: 32px;
-    height: 32px;
-    line-height: 1;
-    transition: all var(--transition-fast);
-    border-radius: 4px;
+/* Panel header icon buttons - consistent with footer icon-btn styling */
+.panel-header .icon-btn {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
 }
 
-.panel-close:hover {
-    background-color: var(--color-bg-tertiary);
-    color: var(--color-text-primary);
-}
-
-.reset-icon {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--color-text-secondary);
-    padding: var(--spacing-xs);
-    border-radius: 4px;
-    transition: all var(--transition-fast);
-}
-
-.reset-icon:hover {
-    background-color: var(--color-bg-secondary);
-    color: var(--color-accent);
+.panel-header .icon-btn svg {
+    width: 20px;
+    height: 20px;
 }
 
 /* Current Selection - Middle Column */
