@@ -270,13 +270,16 @@ export class MortalityChart {
      * Render data points
      */
     renderPoints(series) {
-        // Flatten all points
+        // Flatten all points with complete metadata
         const allPoints = series.flatMap(s =>
             s.values.map(v => ({
                 ...v,
                 seriesId: s.id,
                 color: s.color,
-                label: s.label
+                label: s.label,
+                species: s.species,
+                region: s.region,
+                year: s.year
             }))
         );
 
@@ -356,13 +359,10 @@ export class MortalityChart {
             }
         };
 
-        // Create a unique identifier for this data point
-        const identifier = `${sanitize(data.species)}_${sanitize(data.region)}_week${data.week}`;
-
         const html = `
             <div class="tooltip-header">
                 <div class="tooltip-title">${sanitize(data.label)}</div>
-                <div class="tooltip-subtitle">${identifier.toLowerCase()}</div>
+                <div class="tooltip-subtitle">${sanitize(data.timepoint)}</div>
             </div>
             <div class="tooltip-body">
                 <div class="tooltip-row">
@@ -372,6 +372,10 @@ export class MortalityChart {
                 <div class="tooltip-row">
                     <span class="tooltip-label">Mes</span>
                     <span class="tooltip-value">${sanitize(data.month)}</span>
+                </div>
+                <div class="tooltip-row">
+                    <span class="tooltip-label">Año</span>
+                    <span class="tooltip-value">${data.year}</span>
                 </div>
                 <div class="tooltip-row">
                     <span class="tooltip-label">Valor</span>
