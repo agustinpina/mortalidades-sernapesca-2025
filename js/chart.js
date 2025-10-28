@@ -153,9 +153,9 @@ export class MortalityChart {
             .tickValues([1, 5, 9, 14, 18, 22, 27, 31, 35, 40, 44, 48])
             .tickFormat(d => {
                 const monthLabels = {
-                    1: 'Jan', 5: 'Feb', 9: 'Mar', 14: 'Apr',
-                    18: 'May', 22: 'Jun', 27: 'Jul', 31: 'Aug',
-                    35: 'Sep', 40: 'Oct', 44: 'Nov', 48: 'Dec'
+                    1: 'Ene', 5: 'Feb', 9: 'Mar', 14: 'Abr',
+                    18: 'May', 22: 'Jun', 27: 'Jul', 31: 'Ago',
+                    35: 'Sep', 40: 'Oct', 44: 'Nov', 48: 'Dic'
                 };
                 return monthLabels[d] || '';
             });
@@ -171,7 +171,7 @@ export class MortalityChart {
             .attr('x', this.dimensions.innerWidth / 2)
             .attr('y', innerHeight + 45)
             .style('text-anchor', 'middle')
-            .text('Week of Year');
+            .text('Semana del Año');
 
         // Y axis
         const yAxis = d3.axisLeft(this.scales.y)
@@ -195,7 +195,7 @@ export class MortalityChart {
             .attr('x', -innerHeight / 2)
             .attr('y', -60)
             .style('text-anchor', 'middle')
-            .text(scaleType === 'percentage' ? 'Percentage (%)' : 'Mortality Count');
+            .text(scaleType === 'percentage' ? 'Porcentaje (%)' : 'Conteo de Mortalidad');
     }
 
     /**
@@ -366,15 +366,15 @@ export class MortalityChart {
             </div>
             <div class="tooltip-body">
                 <div class="tooltip-row">
-                    <span class="tooltip-label">Week</span>
+                    <span class="tooltip-label">Semana</span>
                     <span class="tooltip-value">${data.week}</span>
                 </div>
                 <div class="tooltip-row">
-                    <span class="tooltip-label">Month</span>
+                    <span class="tooltip-label">Mes</span>
                     <span class="tooltip-value">${sanitize(data.month)}</span>
                 </div>
                 <div class="tooltip-row">
-                    <span class="tooltip-label">Value</span>
+                    <span class="tooltip-label">Valor</span>
                     <span class="tooltip-value">${formatValue(data.value)}</span>
                 </div>
             </div>

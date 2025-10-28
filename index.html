@@ -37,14 +37,14 @@
         <!-- Chart Container -->
         <div class="chart-container">
             <div class="chart-header">
-                <h3 class="chart-title">Mortality trends across species and regions</h3>
+                <h3 class="chart-title">Tendencias de mortalidad por especie y región</h3>
                 <div class="results-count">
-                    <span id="results-count">0 Results</span>
-                    <button class="settings-toggle" id="settings-toggle" aria-label="Toggle graph settings">
+                    <span id="results-count">0 Resultados</span>
+                    <button class="settings-toggle" id="settings-toggle" aria-label="Mostrar configuración del gráfico">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
                         </svg>
-                        Graph Settings
+                        Configuración
                     </button>
                 </div>
             </div>
@@ -52,11 +52,11 @@
             <!-- Current Selection (moved from filter panel) -->
             <div class="current-selection-chart">
                 <div class="selection-header">
-                    <span class="selection-label">Selection (<span id="selection-count">0</span>)</span>
-                    <button class="clear-btn" id="clear-selection">Clear</button>
+                    <span class="selection-label">Selección (<span id="selection-count">0</span>)</span>
+                    <button class="clear-btn" id="clear-selection">Limpiar</button>
                 </div>
                 <div class="selection-list" id="selection-list">
-                    <p class="empty-state">No series selected</p>
+                    <p class="empty-state">No hay series seleccionadas</p>
                 </div>
             </div>
 
@@ -66,9 +66,9 @@
         <!-- Filter Panel -->
         <aside class="filter-panel" id="filter-panel">
             <div class="panel-header">
-                <h3>GRAPH SETTINGS</h3>
-                <button class="panel-close" id="panel-close" aria-label="Close panel">×</button>
-                <button class="reset-icon" id="reset-filters" aria-label="Reset filters">
+                <h3>CONFIGURACIÓN</h3>
+                <button class="panel-close" id="panel-close" aria-label="Cerrar panel">×</button>
+                <button class="reset-icon" id="reset-filters" aria-label="Restablecer filtros">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                         <path d="M8 3a5 5 0 104.546 2.914.5.5 0 00-.908-.417A4 4 0 118 4a.5.5 0 000-1z"/>
                         <path d="M8 0a.5.5 0 01.5.5v2a.5.5 0 01-1 0v-2A.5.5 0 018 0z"/>
@@ -83,41 +83,41 @@
                 <div class="filter-column-left">
                     <!-- Metric Type Filter -->
                     <div class="filter-section">
-                        <h4 class="filter-title">Metric Type</h4>
+                        <h4 class="filter-title">Tipo de Métrica</h4>
                         <div class="radio-group">
                             <label class="radio-label">
                                 <input type="radio" name="metric" value="total" checked>
-                                <span>Total Mortality</span>
+                                <span>Mortalidad Total</span>
                             </label>
                             <label class="radio-label">
                                 <input type="radio" name="metric" value="primary">
-                                <span>Primary Causes</span>
+                                <span>Causas Primarias</span>
                             </label>
                             <label class="radio-label">
                                 <input type="radio" name="metric" value="secondary">
-                                <span>Secondary Diseases</span>
+                                <span>Enfermedades Secundarias</span>
                             </label>
                         </div>
                     </div>
 
                     <!-- Y-Axis Scale -->
                     <div class="filter-section">
-                        <h4 class="filter-title">Y-Axis Scale</h4>
+                        <h4 class="filter-title">Escala del Eje Y</h4>
                         <div class="radio-group">
                             <label class="radio-label">
                                 <input type="radio" name="scale" value="absolute" checked>
-                                <span>Absolute Count</span>
+                                <span>Conteo Absoluto</span>
                             </label>
                             <label class="radio-label">
                                 <input type="radio" name="scale" value="percentage">
-                                <span>Percentage (%)</span>
+                                <span>Porcentaje (%)</span>
                             </label>
                         </div>
                     </div>
 
                     <!-- Species Filter -->
                     <div class="filter-section">
-                        <h4 class="filter-title">1. Species</h4>
+                        <h4 class="filter-title">1. Especie</h4>
                         <div class="checkbox-group" id="species-filters">
                             <!-- Populated dynamically -->
                         </div>
@@ -125,7 +125,7 @@
 
                     <!-- Region Filter -->
                     <div class="filter-section">
-                        <h4 class="filter-title">2. Region</h4>
+                        <h4 class="filter-title">2. Región</h4>
                         <div class="checkbox-group" id="region-filters">
                             <!-- Populated dynamically -->
                         </div>
@@ -133,7 +133,7 @@
 
                     <!-- Year Filter -->
                     <div class="filter-section">
-                        <h4 class="filter-title">3. Year</h4>
+                        <h4 class="filter-title">3. Año</h4>
                         <div class="checkbox-group" id="year-filters">
                             <!-- Populated dynamically -->
                         </div>
@@ -144,7 +144,7 @@
                 <div class="filter-column-right">
                     <!-- Primary Causes Filter (shown when metric=primary) -->
                     <div class="filter-section" id="primary-causes-section" style="display: none;">
-                        <h4 class="filter-title">4. Primary Causes</h4>
+                        <h4 class="filter-title">4. Causas Primarias</h4>
                         <div class="checkbox-group" id="primary-causes-filters">
                             <!-- Populated dynamically -->
                         </div>
@@ -152,7 +152,7 @@
 
                     <!-- Secondary Diseases Filter (shown when metric=secondary) -->
                     <div class="filter-section" id="secondary-diseases-section" style="display: none;">
-                        <h4 class="filter-title">4. Secondary Diseases</h4>
+                        <h4 class="filter-title">4. Enfermedades Secundarias</h4>
                         <div class="checkbox-group" id="secondary-diseases-filters">
                             <!-- Populated dynamically -->
                         </div>
@@ -163,7 +163,7 @@
 
             <!-- Warning Message -->
             <div class="warning-message" id="line-limit-warning" style="display: none;">
-                ⚠️ Maximum 6 lines can be displayed. Please deselect some options.
+                ⚠️ Se pueden mostrar máximo 6 líneas. Por favor deseleccione algunas opciones.
             </div>
         </aside>
     </main>
@@ -173,14 +173,14 @@
         <div class="footer-content">
             <span class="attribution">CC-BY | Sernapesca 2024-2025</span>
             <div class="footer-actions">
-                <button class="icon-btn" id="download-chart" aria-label="Download chart">
+                <button class="icon-btn" id="download-chart" aria-label="Descargar gráfico">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M10 12.5a.5.5 0 01-.35-.15l-3-3a.5.5 0 01.7-.7L10 11.29l2.65-2.64a.5.5 0 01.7.7l-3 3a.5.5 0 01-.35.15z"/>
                         <path d="M10 2a.5.5 0 01.5.5v10a.5.5 0 01-1 0v-10A.5.5 0 0110 2z"/>
                         <path d="M4 14a.5.5 0 01.5.5v2h11v-2a.5.5 0 011 0v2.5a.5.5 0 01-.5.5h-12a.5.5 0 01-.5-.5v-2.5A.5.5 0 014 14z"/>
                     </svg>
                 </button>
-                <button class="icon-btn" id="share-chart" aria-label="Share chart">
+                <button class="icon-btn" id="share-chart" aria-label="Compartir gráfico">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M15 13a3 3 0 00-2.1.86l-4.8-2.77a3 3 0 000-2.18l4.8-2.77a3 3 0 10-.9-1.5l-4.8 2.77a3 3 0 100 5.18l4.8 2.77A3 3 0 1015 13z"/>
                     </svg>

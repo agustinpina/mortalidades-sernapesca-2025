@@ -293,7 +293,7 @@ export class FilterManager {
         countElement.textContent = series.length;
 
         if (series.length === 0) {
-            container.innerHTML = '<p class="empty-state">No series selected</p>';
+            container.innerHTML = '<p class="empty-state">No hay series seleccionadas</p>';
             return;
         }
 
@@ -318,7 +318,7 @@ export class FilterManager {
      */
     updateResultsCount(count) {
         const countElement = document.getElementById('results-count');
-        countElement.textContent = `${count} Result${count !== 1 ? 's' : ''}`;
+        countElement.textContent = `${count} Resultado${count !== 1 ? 's' : ''}`;
     }
 
     /**

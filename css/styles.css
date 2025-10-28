@@ -703,7 +703,7 @@ body {
 
     /* Adjust selection box on mobile */
     .current-selection-chart {
-        position: static;
+        position: relative;
         max-width: 100%;
         margin-bottom: var(--spacing-md);
     }
