@@ -31,6 +31,7 @@ export class FilterManager {
         this.populateCauseFilters();
         this.updateMetricSections();
         this.applyInitialState();
+        this.updateScaleAvailability(); // Apply validation rules on init
     }
 
     /**
@@ -227,7 +228,17 @@ export class FilterManager {
     handleMetricTypeChange(value) {
         this.state.metricType = value;
         this.state.selectedCauses = []; // Clear selected causes when switching metric type
+
+        // Validation: "Mortalidad Total" cannot be used with "Percentage" scale
+        if (value === 'total' && this.state.scaleType === 'percentage') {
+            // Force scale to absolute
+            this.state.scaleType = 'absolute';
+            document.getElementById('scale-select').value = 'absolute';
+            console.log('Auto-switched to absolute scale: Total mortality with percentage is invalid (always 100%)');
+        }
+
         this.updateMetricSections();
+        this.updateScaleAvailability();
         this.notifyFilterChange();
     }
 
@@ -235,8 +246,36 @@ export class FilterManager {
      * Handle scale type change (absolute, percentage)
      */
     handleScaleTypeChange(value) {
+        // Validation: "Percentage" cannot be used with "Mortalidad Total"
+        if (value === 'percentage' && this.state.metricType === 'total') {
+            // Force metric to primary (or keep current if not total)
+            this.state.metricType = 'primary';
+            document.getElementById('metric-select').value = 'primary';
+            console.log('Auto-switched to primary causes: Total mortality with percentage is invalid (always 100%)');
+            this.updateMetricSections();
+        }
+
         this.state.scaleType = value;
+        this.updateScaleAvailability();
         this.notifyFilterChange();
+    }
+
+    /**
+     * Update scale dropdown availability based on metric type
+     */
+    updateScaleAvailability() {
+        const scaleSelect = document.getElementById('scale-select');
+        const percentageOption = scaleSelect.querySelector('option[value="percentage"]');
+
+        if (this.state.metricType === 'total') {
+            // Disable percentage option for total mortality
+            percentageOption.disabled = true;
+            percentageOption.textContent = 'Porcentaje (%) - No disponible con Mortalidad Total';
+        } else {
+            // Enable percentage option for primary/secondary causes
+            percentageOption.disabled = false;
+            percentageOption.textContent = 'Porcentaje (%)';
+        }
     }
 
     /**
