@@ -6,7 +6,7 @@
 export class DataTransformer {
     constructor() {
         /**
-         * Official Sernapesca color palette
+         * Official Sernapesca color palette (Updated for better contrast)
          *
          * Color assignment strategy:
          * - Each unique data series receives a color from this palette
@@ -15,20 +15,25 @@ export class DataTransformer {
          * - This ensures maximum visual differentiation by using all 6 colors
          *   before repeating any color
          *
+         * Updated colors (v2):
+         * - #081935: Enhanced base dark tone (was #041934) - better contrast
+         * - #1939B7: More vibrant primary blue (was #00224B) - improved readability
+         * - Other colors unchanged for consistency
+         *
          * Example with 4 series (max displayed):
-         * - Series 0: #041934 (Dark Navy Blue)
-         * - Series 1: #00224B (Navy Blue)
+         * - Series 0: #081935 (Dark Navy Blue - Enhanced)
+         * - Series 1: #1939B7 (Navy Blue - Vibrant)
          * - Series 2: #7076E8 (Periwinkle Blue)
          * - Series 3: #009BE1 (Sky Blue)
          *
          * Example with 8 series (before limiting to 4):
          * - Series 0-5: All 6 unique colors
-         * - Series 6: Cycles back to #041934 (Dark Navy Blue)
-         * - Series 7: Cycles to #00224B (Navy Blue)
+         * - Series 6: Cycles back to #081935 (Dark Navy Blue)
+         * - Series 7: Cycles to #1939B7 (Navy Blue)
          */
         this.officialColors = [
-            '#041934', // Dark Navy Blue
-            '#00224B', // Navy Blue
+            '#081935', // Dark Navy Blue - Enhanced base dark tone
+            '#1939B7', // Navy Blue - More vibrant primary blue
             '#7076E8', // Periwinkle Blue
             '#009BE1', // Sky Blue
             '#74D0C7', // Aquamarine

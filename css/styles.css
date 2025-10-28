@@ -22,15 +22,15 @@
     --color-warning: #ffc107;
     --color-danger: #dc3545;
 
-    /* Chart Colors */
-    --chart-color-1: #1f77b4; /* Blue */
-    --chart-color-2: #ff7f0e; /* Orange */
-    --chart-color-3: #2ca02c; /* Green */
-    --chart-color-4: #d62728; /* Red */
-    --chart-color-5: #9467bd; /* Purple */
-    --chart-color-6: #8c564b; /* Brown */
-    --chart-color-7: #e377c2; /* Pink */
-    --chart-color-8: #7f7f7f; /* Gray */
+    /* Chart Colors - Official Sernapesca Palette (Updated for better contrast) */
+    --chart-color-1: #081935; /* Dark Navy Blue - Enhanced base dark tone */
+    --chart-color-2: #1939B7; /* Navy Blue - More vibrant primary blue */
+    --chart-color-3: #7076E8; /* Periwinkle Blue */
+    --chart-color-4: #009BE1; /* Sky Blue */
+    --chart-color-5: #74D0C7; /* Aquamarine */
+    --chart-color-6: #B8E4F2; /* Pale Baby Blue */
+    --chart-color-7: #e377c2; /* Pink (fallback) */
+    --chart-color-8: #7f7f7f; /* Gray (fallback) */
 
     /* Typography */
     --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
