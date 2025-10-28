@@ -52,9 +52,9 @@
             <div id="chart" class="chart-area"></div>
         </div>
 
-        <!-- Filter Panel -->
-        <aside class="filter-panel" id="filter-panel">
-            <!-- Current Selection (moved above filters) -->
+        <!-- Right Side: Selection + Filters -->
+        <div class="right-column">
+            <!-- Current Selection (above filter panel) -->
             <div class="current-selection-chart">
                 <div class="selection-header">
                     <span class="selection-label">Selección (<span id="selection-count">0</span>)</span>
@@ -64,6 +64,9 @@
                     <p class="empty-state">No hay series seleccionadas</p>
                 </div>
             </div>
+
+            <!-- Filter Panel -->
+            <aside class="filter-panel" id="filter-panel">
             <div class="panel-header">
                 <h3>CONFIGURACIÓN</h3>
                 <button class="panel-close" id="panel-close" aria-label="Cerrar panel">×</button>
@@ -149,7 +152,8 @@
             <div class="warning-message" id="line-limit-warning" style="display: none;">
                 ⚠️ Se pueden mostrar máximo 4 líneas. Por favor deseleccione algunas opciones.
             </div>
-        </aside>
+            </aside>
+        </div>
     </main>
 
     <!-- Footer -->

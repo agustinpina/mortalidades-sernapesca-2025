@@ -150,6 +150,14 @@ body {
     align-items: start;
 }
 
+/* Right Column Container */
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    height: 750px;
+}
+
 /* ===================================
    Chart Container
    =================================== */
@@ -230,12 +238,12 @@ body {
     border-radius: 8px;
     padding: var(--spacing-lg);
     box-shadow: var(--shadow-md);
-    height: 750px;
-    max-height: 750px;
+    flex: 1;
     overflow-y: auto;
     scroll-behavior: smooth;
     display: flex;
     flex-direction: column;
+    min-height: 0;
 }
 
 .panel-header {
@@ -282,13 +290,14 @@ body {
     color: var(--color-accent);
 }
 
-/* Current Selection - In Filter Panel (above filters) */
+/* Current Selection - Above Filter Panel */
 .current-selection-chart {
     padding: var(--spacing-md);
-    background-color: var(--color-bg-secondary);
-    border-radius: 6px;
+    background-color: var(--color-bg-primary);
+    border-radius: 8px;
     border: 1px solid var(--color-border);
-    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+    flex-shrink: 0;
 }
 
 /* Old selection in filter panel - keep for backwards compatibility but hidden */
