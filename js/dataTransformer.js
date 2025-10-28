@@ -7,14 +7,12 @@ export class DataTransformer {
     constructor() {
         this.colorScale = d3.scaleOrdinal()
             .range([
-                '#1f77b4', // Blue
-                '#ff7f0e', // Orange
-                '#2ca02c', // Green
-                '#d62728', // Red
-                '#9467bd', // Purple
-                '#8c564b', // Brown
-                '#e377c2', // Pink
-                '#7f7f7f'  // Gray
+                '#041934', // Dark Navy Blue
+                '#00224B', // Navy Blue
+                '#7076E8', // Periwinkle Blue
+                '#009BE1', // Sky Blue
+                '#74D0C7', // Aquamarine
+                '#B8E4F2'  // Pale Baby Blue
             ]);
     }
 
@@ -254,17 +252,17 @@ export class DataTransformer {
     }
 
     /**
-     * Limit series to maximum of 6 lines
+     * Limit series to maximum of 4 lines
      * @param {Array} series - Series data
-     * @param {Number} maxLines - Maximum number of lines (default: 6)
+     * @param {Number} maxLines - Maximum number of lines (default: 4)
      * @returns {Object} { series: limited series, exceeded: boolean }
      */
-    limitSeries(series, maxLines = 6) {
+    limitSeries(series, maxLines = 4) {
         if (series.length <= maxLines) {
             return { series, exceeded: false };
         }
 
-        // Sort by total mortality (sum of all values) and take top 6
+        // Sort by total mortality (sum of all values) and take top 4
         const sortedSeries = series
             .map(s => ({
                 ...s,

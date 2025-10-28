@@ -49,7 +49,12 @@
                 </div>
             </div>
 
-            <!-- Current Selection (moved from filter panel) -->
+            <div id="chart" class="chart-area"></div>
+        </div>
+
+        <!-- Filter Panel -->
+        <aside class="filter-panel" id="filter-panel">
+            <!-- Current Selection (moved above filters) -->
             <div class="current-selection-chart">
                 <div class="selection-header">
                     <span class="selection-label">Selección (<span id="selection-count">0</span>)</span>
@@ -59,12 +64,6 @@
                     <p class="empty-state">No hay series seleccionadas</p>
                 </div>
             </div>
-
-            <div id="chart" class="chart-area"></div>
-        </div>
-
-        <!-- Filter Panel -->
-        <aside class="filter-panel" id="filter-panel">
             <div class="panel-header">
                 <h3>CONFIGURACIÓN</h3>
                 <button class="panel-close" id="panel-close" aria-label="Cerrar panel">×</button>
@@ -84,35 +83,20 @@
                     <!-- Metric Type Filter -->
                     <div class="filter-section">
                         <h4 class="filter-title">Tipo de Métrica</h4>
-                        <div class="radio-group">
-                            <label class="radio-label">
-                                <input type="radio" name="metric" value="total" checked>
-                                <span>Mortalidad Total</span>
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="metric" value="primary">
-                                <span>Causas Primarias</span>
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="metric" value="secondary">
-                                <span>Enfermedades Secundarias</span>
-                            </label>
-                        </div>
+                        <select id="metric-select" class="custom-select" name="metric">
+                            <option value="total" selected>Mortalidad Total</option>
+                            <option value="primary">Causas Primarias</option>
+                            <option value="secondary">Enfermedades Secundarias</option>
+                        </select>
                     </div>
 
                     <!-- Y-Axis Scale -->
                     <div class="filter-section">
                         <h4 class="filter-title">Escala del Eje Y</h4>
-                        <div class="radio-group">
-                            <label class="radio-label">
-                                <input type="radio" name="scale" value="absolute" checked>
-                                <span>Conteo Absoluto</span>
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="scale" value="percentage">
-                                <span>Porcentaje (%)</span>
-                            </label>
-                        </div>
+                        <select id="scale-select" class="custom-select" name="scale">
+                            <option value="absolute" selected>Conteo Absoluto</option>
+                            <option value="percentage">Porcentaje (%)</option>
+                        </select>
                     </div>
 
                     <!-- Species Filter -->
@@ -163,7 +147,7 @@
 
             <!-- Warning Message -->
             <div class="warning-message" id="line-limit-warning" style="display: none;">
-                ⚠️ Se pueden mostrar máximo 6 líneas. Por favor deseleccione algunas opciones.
+                ⚠️ Se pueden mostrar máximo 4 líneas. Por favor deseleccione algunas opciones.
             </div>
         </aside>
     </main>

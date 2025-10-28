@@ -22,15 +22,15 @@
     --color-warning: #ffc107;
     --color-danger: #dc3545;
 
-    /* Chart Colors */
-    --chart-color-1: #1f77b4; /* Blue */
-    --chart-color-2: #ff7f0e; /* Orange */
-    --chart-color-3: #2ca02c; /* Green */
-    --chart-color-4: #d62728; /* Red */
-    --chart-color-5: #9467bd; /* Purple */
-    --chart-color-6: #8c564b; /* Brown */
-    --chart-color-7: #e377c2; /* Pink */
-    --chart-color-8: #7f7f7f; /* Gray */
+    /* Chart Colors - Official Sernapesca Palette */
+    --chart-color-1: #041934; /* Dark Navy Blue */
+    --chart-color-2: #00224B; /* Navy Blue */
+    --chart-color-3: #7076E8; /* Periwinkle Blue */
+    --chart-color-4: #009BE1; /* Sky Blue */
+    --chart-color-5: #74D0C7; /* Aquamarine */
+    --chart-color-6: #B8E4F2; /* Pale Baby Blue */
+    --chart-color-7: #e377c2; /* Pink (fallback) */
+    --chart-color-8: #7f7f7f; /* Gray (fallback) */
 
     /* Typography */
     --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -282,18 +282,13 @@ body {
     color: var(--color-accent);
 }
 
-/* Current Selection - In Chart Area */
+/* Current Selection - In Filter Panel (above filters) */
 .current-selection-chart {
-    position: relative;
-    top: 10px;
-    right: 10px;
-    max-width: 320px;
     padding: var(--spacing-md);
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: var(--color-bg-secondary);
     border-radius: 6px;
-    box-shadow: var(--shadow-md);
     border: 1px solid var(--color-border);
-    z-index: 10;
+    margin-bottom: var(--spacing-lg);
 }
 
 /* Old selection in filter panel - keep for backwards compatibility but hidden */
@@ -448,6 +443,41 @@ body {
 
 .checkbox-label input[type="checkbox"] {
     cursor: pointer;
+}
+
+/* Custom Select Dropdowns */
+.custom-select {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.875rem;
+    font-family: var(--font-primary);
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23212529' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--spacing-sm) center;
+    background-size: 12px;
+    padding-right: calc(var(--spacing-md) + 20px);
+}
+
+.custom-select:hover {
+    border-color: var(--color-accent);
+    background-color: var(--color-bg-secondary);
+}
+
+.custom-select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+.custom-select option {
+    padding: var(--spacing-sm);
 }
 
 /* Warning Message */

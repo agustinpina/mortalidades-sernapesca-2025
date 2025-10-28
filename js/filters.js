@@ -112,11 +112,11 @@ export class FilterManager {
      * Apply initial state to UI
      */
     applyInitialState() {
-        // Set metric type radio
-        document.querySelector(`input[name="metric"][value="${this.state.metricType}"]`).checked = true;
+        // Set metric type select
+        document.getElementById('metric-select').value = this.state.metricType;
 
-        // Set scale type radio
-        document.querySelector(`input[name="scale"][value="${this.state.scaleType}"]`).checked = true;
+        // Set scale type select
+        document.getElementById('scale-select').value = this.state.scaleType;
     }
 
     /**
@@ -144,18 +144,14 @@ export class FilterManager {
             }
         });
 
-        // Metric type radio buttons
-        document.addEventListener('change', (e) => {
-            if (e.target.name === 'metric') {
-                this.handleMetricTypeChange(e.target.value);
-            }
+        // Metric type select dropdown
+        document.getElementById('metric-select').addEventListener('change', (e) => {
+            this.handleMetricTypeChange(e.target.value);
         });
 
-        // Scale type radio buttons
-        document.addEventListener('change', (e) => {
-            if (e.target.name === 'scale') {
-                this.handleScaleTypeChange(e.target.value);
-            }
+        // Scale type select dropdown
+        document.getElementById('scale-select').addEventListener('change', (e) => {
+            this.handleScaleTypeChange(e.target.value);
         });
 
         // Primary cause checkboxes

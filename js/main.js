@@ -85,8 +85,8 @@ class MortalityDashboard {
             series = this.dataTransformer.convertToPercentages(series);
         }
 
-        // Limit to 6 series and check if exceeded
-        const { series: limitedSeries, exceeded } = this.dataTransformer.limitSeries(series, 6);
+        // Limit to 4 series and check if exceeded
+        const { series: limitedSeries, exceeded } = this.dataTransformer.limitSeries(series, 4);
 
         console.log('Series after limit:', limitedSeries, 'Exceeded:', exceeded);
 
