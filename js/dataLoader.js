@@ -161,16 +161,16 @@ export class DataLoader {
      */
     getPrimaryCauses() {
         return [
-            { field: 'mort_prim_depredadores', label: 'Predators (Depredadores)' },
-            { field: 'mort_prim_embrionaria', label: 'Embryonic (Embrionaria)' },
-            { field: 'mort_prim_eliminacion', label: 'Culling (Eliminación)' },
-            { field: 'mort_prim_ambiental', label: 'Environmental (Ambiental)' },
-            { field: 'mort_prim_sin_causa_aparente', label: 'No Apparent Cause' },
-            { field: 'mort_prim_secundaria', label: 'Disease (Secundaria)' },
-            { field: 'mort_prim_otras', label: 'Other Causes (Otras)' },
-            { field: 'mort_prim_desadaptado', label: 'Maladapted (Desadaptado)' },
-            { field: 'mort_prim_deforme', label: 'Deformed (Deforme)' },
-            { field: 'mort_prim_dano_mecanico', label: 'Mechanical Damage (Daño Mecánico)' }
+            { field: 'mort_prim_depredadores', label: 'Depredadores' },
+            { field: 'mort_prim_embrionaria', label: 'Embrionaria' },
+            { field: 'mort_prim_eliminacion', label: 'Eliminación' },
+            { field: 'mort_prim_ambiental', label: 'Ambiental' },
+            { field: 'mort_prim_sin_causa_aparente', label: 'Sin Causa Aparente' },
+            { field: 'mort_prim_secundaria', label: 'Secundaria (Enfermedad)' },
+            { field: 'mort_prim_otras', label: 'Otras Causas' },
+            { field: 'mort_prim_desadaptado', label: 'Desadaptado' },
+            { field: 'mort_prim_deforme', label: 'Deforme' },
+            { field: 'mort_prim_dano_mecanico', label: 'Daño Mecánico' }
         ];
     }
 
@@ -179,26 +179,26 @@ export class DataLoader {
      */
     getSecondaryDiseases() {
         return [
-            { field: 'mort_sec_srs', label: 'SRS (Piscirickettsia)' },
-            { field: 'mort_sec_isa', label: 'ISA (Infectious Salmon Anemia)' },
-            { field: 'mort_sec_bkd', label: 'BKD (Bacterial Kidney Disease)' },
-            { field: 'mort_sec_ipn', label: 'IPN (Infectious Pancreatic Necrosis)' },
+            { field: 'mort_sec_srs', label: 'SRS (Piscirickettsiosis)' },
+            { field: 'mort_sec_isa', label: 'ISA (Anemia Infecciosa del Salmón)' },
+            { field: 'mort_sec_bkd', label: 'BKD (Enfermedad Bacteriana del Riñón)' },
+            { field: 'mort_sec_ipn', label: 'IPN (Necrosis Pancreática Infecciosa)' },
             { field: 'mort_sec_tenacibaculosis', label: 'Tenacibaculosis' },
             { field: 'mort_sec_vibrio', label: 'Vibriosis' },
             { field: 'mort_sec_yersiniosis', label: 'Yersiniosis' },
-            { field: 'mort_sec_hsmi', label: 'HSMI (Heart & Skeletal Muscle)' },
-            { field: 'mort_sec_francisellosis', label: 'Francisellosis' },
+            { field: 'mort_sec_hsmi', label: 'HSMI (Miopatía Cardíaca y Esquelética)' },
+            { field: 'mort_sec_francisellosis', label: 'Franciseelosis' },
             { field: 'mort_sec_flavobacteriosis', label: 'Flavobacteriosis' },
-            { field: 'mort_sec_furunculosis_atipica', label: 'Atypical Furunculosis' },
-            { field: 'mort_sec_estreptococosis', label: 'Streptococcosis' },
+            { field: 'mort_sec_furunculosis_atipica', label: 'Furunculosis Atípica' },
+            { field: 'mort_sec_estreptococosis', label: 'Estreptococosis' },
             { field: 'mort_sec_amebiasis', label: 'Amebiasis' },
-            { field: 'mort_sec_sindrome_icterico', label: 'Jaundice Syndrome' },
-            { field: 'mort_sec_micosis', label: 'Mycosis (Fungal)' },
-            { field: 'mort_sec_sit', label: 'SIT (Rainbow Trout Syndrome)' },
-            { field: 'mort_sec_ich', label: 'Ich Syndrome' },
-            { field: 'mort_sec_shs', label: 'SHS (Salmon Hemorrhagic Syndrome)' },
-            { field: 'mort_sec_nefrocalcinosis', label: 'Nephrocalcinosis' },
-            { field: 'mort_sec_exofialosis', label: 'Exophiala Infection' }
+            { field: 'mort_sec_sindrome_icterico', label: 'Síndrome Ictérico' },
+            { field: 'mort_sec_micosis', label: 'Micosis' },
+            { field: 'mort_sec_sit', label: 'SIT (Síndrome de la Trucha Arcoíris)' },
+            { field: 'mort_sec_ich', label: 'Síndrome Ich' },
+            { field: 'mort_sec_shs', label: 'SHS (Síndrome Hemorrágico del Salmón)' },
+            { field: 'mort_sec_nefrocalcinosis', label: 'Nefrocalcinosis' },
+            { field: 'mort_sec_exofialosis', label: 'Exofialosis' }
         ];
     }
 }

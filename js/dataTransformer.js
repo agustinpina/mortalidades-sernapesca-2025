@@ -191,16 +191,16 @@ export class DataTransformer {
         // For now, create a simple mapping
         const labelMap = {
             // Primary causes
-            'mort_prim_depredadores': 'Predators',
-            'mort_prim_embrionaria': 'Embryonic',
-            'mort_prim_eliminacion': 'Culling',
-            'mort_prim_ambiental': 'Environmental',
-            'mort_prim_sin_causa_aparente': 'No Apparent Cause',
-            'mort_prim_secundaria': 'Disease',
-            'mort_prim_otras': 'Other Causes',
-            'mort_prim_desadaptado': 'Maladapted',
-            'mort_prim_deforme': 'Deformed',
-            'mort_prim_dano_mecanico': 'Mechanical Damage',
+            'mort_prim_depredadores': 'Depredadores',
+            'mort_prim_embrionaria': 'Embrionaria',
+            'mort_prim_eliminacion': 'Eliminación',
+            'mort_prim_ambiental': 'Ambiental',
+            'mort_prim_sin_causa_aparente': 'Sin Causa Aparente',
+            'mort_prim_secundaria': 'Secundaria',
+            'mort_prim_otras': 'Otras Causas',
+            'mort_prim_desadaptado': 'Desadaptado',
+            'mort_prim_deforme': 'Deforme',
+            'mort_prim_dano_mecanico': 'Daño Mecánico',
             // Secondary diseases
             'mort_sec_srs': 'SRS',
             'mort_sec_isa': 'ISA',
@@ -210,18 +210,18 @@ export class DataTransformer {
             'mort_sec_vibrio': 'Vibriosis',
             'mort_sec_yersiniosis': 'Yersiniosis',
             'mort_sec_hsmi': 'HSMI',
-            'mort_sec_francisellosis': 'Francisellosis',
+            'mort_sec_francisellosis': 'Franciseelosis',
             'mort_sec_flavobacteriosis': 'Flavobacteriosis',
-            'mort_sec_furunculosis_atipica': 'Atypical Furunculosis',
-            'mort_sec_estreptococosis': 'Streptococcosis',
+            'mort_sec_furunculosis_atipica': 'Furunculosis Atípica',
+            'mort_sec_estreptococosis': 'Estreptococosis',
             'mort_sec_amebiasis': 'Amebiasis',
-            'mort_sec_sindrome_icterico': 'Jaundice Syndrome',
-            'mort_sec_micosis': 'Mycosis',
+            'mort_sec_sindrome_icterico': 'Síndrome Ictérico',
+            'mort_sec_micosis': 'Micosis',
             'mort_sec_sit': 'SIT',
-            'mort_sec_ich': 'Ich',
+            'mort_sec_ich': 'Síndrome Ich',
             'mort_sec_shs': 'SHS',
-            'mort_sec_nefrocalcinosis': 'Nephrocalcinosis',
-            'mort_sec_exofialosis': 'Exophiala'
+            'mort_sec_nefrocalcinosis': 'Nefrocalcinosis',
+            'mort_sec_exofialosis': 'Exofialosis'
         };
 
         return labelMap[causeField] || causeField;
