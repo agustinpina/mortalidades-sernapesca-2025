@@ -5,15 +5,51 @@
 
 export class DataTransformer {
     constructor() {
-        this.colorScale = d3.scaleOrdinal()
-            .range([
-                '#041934', // Dark Navy Blue
-                '#00224B', // Navy Blue
-                '#7076E8', // Periwinkle Blue
-                '#009BE1', // Sky Blue
-                '#74D0C7', // Aquamarine
-                '#B8E4F2'  // Pale Baby Blue
-            ]);
+        /**
+         * Official Sernapesca color palette
+         *
+         * Color assignment strategy:
+         * - Each unique data series receives a color from this palette
+         * - Colors are assigned sequentially (0, 1, 2, 3, 4, 5)
+         * - After the 6th series, colors cycle back to the beginning (6 → 0, 7 → 1, etc.)
+         * - This ensures maximum visual differentiation by using all 6 colors
+         *   before repeating any color
+         *
+         * Example with 4 series (max displayed):
+         * - Series 0: #041934 (Dark Navy Blue)
+         * - Series 1: #00224B (Navy Blue)
+         * - Series 2: #7076E8 (Periwinkle Blue)
+         * - Series 3: #009BE1 (Sky Blue)
+         *
+         * Example with 8 series (before limiting to 4):
+         * - Series 0-5: All 6 unique colors
+         * - Series 6: Cycles back to #041934 (Dark Navy Blue)
+         * - Series 7: Cycles to #00224B (Navy Blue)
+         */
+        this.officialColors = [
+            '#041934', // Dark Navy Blue
+            '#00224B', // Navy Blue
+            '#7076E8', // Periwinkle Blue
+            '#009BE1', // Sky Blue
+            '#74D0C7', // Aquamarine
+            '#B8E4F2'  // Pale Baby Blue
+        ];
+    }
+
+    /**
+     * Get color for a series by index, cycling through the palette
+     * Ensures each series gets a unique color before reusing any color
+     * @param {Number} index - Series index
+     * @returns {String} Hex color code
+     */
+    getColorByIndex(index) {
+        const colorIndex = index % this.officialColors.length;
+        const color = this.officialColors[colorIndex];
+
+        // Log color assignment for debugging
+        console.log(`Series ${index} assigned color ${colorIndex + 1}/6: ${color}`);
+
+        return color;
     }
 
     /**
@@ -85,7 +121,7 @@ export class DataTransformer {
                 species: values[0].especie,
                 region: values[0].region,
                 year: values[0].year,
-                color: this.colorScale(colorIndex++),
+                color: this.getColorByIndex(colorIndex),
                 lineStyle: values[0].year === 2024 ? 'solid' : 'dashed',
                 values: sortedValues.map(d => ({
                     week: d.week,
@@ -97,7 +133,12 @@ export class DataTransformer {
             };
 
             series.push(serie);
+            colorIndex++;
         });
+
+        // Log summary of color assignments
+        console.log(`Total mortality series created: ${series.length}`);
+        console.log(`Colors used: ${Math.min(series.length, this.officialColors.length)} of ${this.officialColors.length} available`);
 
         return series;
     }
@@ -141,7 +182,7 @@ export class DataTransformer {
                     region: combo.region,
                     year: combo.year,
                     cause: causeField,
-                    color: this.colorScale(colorIndex++),
+                    color: this.getColorByIndex(colorIndex),
                     lineStyle: combo.year === 2024 ? 'solid' : 'dashed',
                     values: comboData.map(d => ({
                         week: d.week,
@@ -153,8 +194,13 @@ export class DataTransformer {
                 };
 
                 series.push(serie);
+                colorIndex++;
             });
         });
+
+        // Log summary of color assignments
+        console.log(`Cause-specific series created: ${series.length}`);
+        console.log(`Colors used: ${Math.min(series.length, this.officialColors.length)} of ${this.officialColors.length} available`);
 
         return series;
     }

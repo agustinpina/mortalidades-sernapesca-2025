@@ -106,6 +106,42 @@ class MortalityDashboard {
      * Initialize additional event listeners
      */
     initializeEventListeners() {
+        // Filter panel toggle
+        const filterToggleBtn = document.getElementById('filter-toggle-btn');
+        const filterPanel = document.getElementById('filter-panel');
+        const filterOverlay = document.getElementById('filter-overlay');
+        const panelCloseBtn = document.getElementById('panel-close');
+
+        if (filterToggleBtn && filterPanel && filterOverlay) {
+            // Open filter panel
+            filterToggleBtn.addEventListener('click', () => {
+                filterPanel.classList.add('open');
+                filterOverlay.classList.add('visible');
+                document.body.style.overflow = 'hidden'; // Prevent body scroll
+            });
+
+            // Close filter panel
+            const closePanel = () => {
+                filterPanel.classList.remove('open');
+                filterOverlay.classList.remove('visible');
+                document.body.style.overflow = ''; // Restore body scroll
+            };
+
+            if (panelCloseBtn) {
+                panelCloseBtn.addEventListener('click', closePanel);
+            }
+
+            // Close on overlay click
+            filterOverlay.addEventListener('click', closePanel);
+
+            // Close on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && filterPanel.classList.contains('open')) {
+                    closePanel();
+                }
+            });
+        }
+
         // Download chart button
         const downloadBtn = document.getElementById('download-chart');
         if (downloadBtn) {

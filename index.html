@@ -32,29 +32,31 @@
         </p>
     </section>
 
+    <!-- Filter Overlay Backdrop -->
+    <div class="filter-overlay" id="filter-overlay"></div>
+
     <!-- Main Content Area -->
     <main class="content-wrapper">
-        <!-- Chart Container -->
+        <!-- Chart Container (Left Column) -->
         <div class="chart-container">
             <div class="chart-header">
                 <h3 class="chart-title">
                     Tendencias de mortalidad por especie y región
                     <span id="results-count">0 Resultados</span>
                 </h3>
-                <button class="settings-toggle" id="settings-toggle" aria-label="Mostrar configuración del gráfico">
+                <button class="filter-toggle-btn" id="filter-toggle-btn" aria-label="Mostrar panel de filtros">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                        <path d="M3 3h14a1 1 0 011 1v2a1 1 0 01-.293.707L12 12.414V17a1 1 0 01-.553.894l-2 1A1 1 0 018 18v-5.586L2.293 6.707A1 1 0 012 6V4a1 1 0 011-1z"/>
                     </svg>
-                    Configuración
+                    Filtros
                 </button>
             </div>
 
             <div id="chart" class="chart-area"></div>
         </div>
 
-        <!-- Right Side: Selection + Filters -->
-        <div class="right-column">
-            <!-- Current Selection (above filter panel) -->
+        <!-- Current Selection (Middle Column) -->
+        <div class="current-selection-column">
             <div class="current-selection-chart">
                 <div class="selection-header">
                     <span class="selection-label">Selección (<span id="selection-count">0</span>)</span>
@@ -64,9 +66,10 @@
                     <p class="empty-state">No hay series seleccionadas</p>
                 </div>
             </div>
+        </div>
 
-            <!-- Filter Panel -->
-            <aside class="filter-panel" id="filter-panel">
+        <!-- Filter Panel (Right Column) -->
+        <aside class="filter-panel" id="filter-panel">
             <div class="panel-header">
                 <h3>CONFIGURACIÓN</h3>
                 <button class="panel-close" id="panel-close" aria-label="Cerrar panel">×</button>
@@ -152,8 +155,7 @@
             <div class="warning-message" id="line-limit-warning" style="display: none;">
                 ⚠️ Se pueden mostrar máximo 4 líneas. Por favor deseleccione algunas opciones.
             </div>
-            </aside>
-        </div>
+        </aside>
     </main>
 
     <!-- Footer -->
