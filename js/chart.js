@@ -188,12 +188,13 @@ export class MortalityChart {
             .attr('class', 'axis y-axis')
             .call(yAxis);
 
-        // Y axis label - horizontal at top
+        // Y axis label - horizontal at top left
         this.axesGroup.append('text')
             .attr('class', 'axis-label axis-label-y')
             .attr('x', -10)
             .attr('y', -20)
             .style('text-anchor', 'end')
+            .attr('text-anchor', 'end')  // Set as attribute to override any defaults
             .text(scaleType === 'percentage' ? '% Mortalidad' : 'N° Muertes');
     }
 
