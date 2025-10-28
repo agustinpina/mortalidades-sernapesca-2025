@@ -37,16 +37,16 @@
         <!-- Chart Container -->
         <div class="chart-container">
             <div class="chart-header">
-                <h3 class="chart-title">Tendencias de mortalidad por especie y región</h3>
-                <div class="results-count">
+                <h3 class="chart-title">
+                    Tendencias de mortalidad por especie y región
                     <span id="results-count">0 Resultados</span>
-                    <button class="settings-toggle" id="settings-toggle" aria-label="Mostrar configuración del gráfico">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
-                        </svg>
-                        Configuración
-                    </button>
-                </div>
+                </h3>
+                <button class="settings-toggle" id="settings-toggle" aria-label="Mostrar configuración del gráfico">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                    </svg>
+                    Configuración
+                </button>
             </div>
 
             <div id="chart" class="chart-area"></div>
@@ -85,7 +85,7 @@
                 <div class="filter-column-left">
                     <!-- Metric Type Filter -->
                     <div class="filter-section">
-                        <h4 class="filter-title">Tipo de Métrica</h4>
+                        <h4 class="filter-title">1. Tipo de Métrica</h4>
                         <select id="metric-select" class="custom-select" name="metric">
                             <option value="total" selected>Mortalidad Total</option>
                             <option value="primary">Causas Primarias</option>
@@ -95,7 +95,7 @@
 
                     <!-- Y-Axis Scale -->
                     <div class="filter-section">
-                        <h4 class="filter-title">Escala del Eje Y</h4>
+                        <h4 class="filter-title">2. Escala del Eje Y</h4>
                         <select id="scale-select" class="custom-select" name="scale">
                             <option value="absolute" selected>Conteo Absoluto</option>
                             <option value="percentage">Porcentaje (%)</option>
@@ -104,7 +104,7 @@
 
                     <!-- Species Filter -->
                     <div class="filter-section">
-                        <h4 class="filter-title">1. Especie</h4>
+                        <h4 class="filter-title">3. Especie</h4>
                         <div class="checkbox-group" id="species-filters">
                             <!-- Populated dynamically -->
                         </div>
@@ -112,7 +112,7 @@
 
                     <!-- Region Filter -->
                     <div class="filter-section">
-                        <h4 class="filter-title">2. Región</h4>
+                        <h4 class="filter-title">4. Región</h4>
                         <div class="checkbox-group" id="region-filters">
                             <!-- Populated dynamically -->
                         </div>
@@ -120,7 +120,7 @@
 
                     <!-- Year Filter -->
                     <div class="filter-section">
-                        <h4 class="filter-title">3. Año</h4>
+                        <h4 class="filter-title">5. Año</h4>
                         <div class="checkbox-group" id="year-filters">
                             <!-- Populated dynamically -->
                         </div>
@@ -131,7 +131,7 @@
                 <div class="filter-column-right">
                     <!-- Primary Causes Filter (shown when metric=primary) -->
                     <div class="filter-section" id="primary-causes-section" style="display: none;">
-                        <h4 class="filter-title">4. Causas Primarias</h4>
+                        <h4 class="filter-title">6. Causas Primarias</h4>
                         <div class="checkbox-group" id="primary-causes-filters">
                             <!-- Populated dynamically -->
                         </div>
@@ -139,7 +139,7 @@
 
                     <!-- Secondary Diseases Filter (shown when metric=secondary) -->
                     <div class="filter-section" id="secondary-diseases-section" style="display: none;">
-                        <h4 class="filter-title">4. Enfermedades Secundarias</h4>
+                        <h4 class="filter-title">6. Enfermedades Secundarias</h4>
                         <div class="checkbox-group" id="secondary-diseases-filters">
                             <!-- Populated dynamically -->
                         </div>

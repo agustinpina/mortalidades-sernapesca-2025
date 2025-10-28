@@ -188,14 +188,13 @@ export class MortalityChart {
             .attr('class', 'axis y-axis')
             .call(yAxis);
 
-        // Y axis label
+        // Y axis label - horizontal at top
         this.axesGroup.append('text')
-            .attr('class', 'axis-label')
-            .attr('transform', 'rotate(-90)')
-            .attr('x', -innerHeight / 2)
-            .attr('y', -60)
-            .style('text-anchor', 'middle')
-            .text(scaleType === 'percentage' ? 'Porcentaje (%)' : 'Conteo de Mortalidad');
+            .attr('class', 'axis-label axis-label-y')
+            .attr('x', -10)
+            .attr('y', -20)
+            .style('text-anchor', 'end')
+            .text(scaleType === 'percentage' ? '% Mortalidad' : 'N° Muertes');
     }
 
     /**
