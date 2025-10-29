@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A D3.js-based interactive web application for visualizing Chilean salmon mortality data from Sernapesca (2024-2025). The application features a three-column responsive layout, dynamic filtering, year-over-year comparisons, full WCAG 2.1 AA accessibility compliance, and multi-series line charts.
+A D3.js-based interactive web application for visualizing Chilean salmon mortality data from Sernapesca (2024-2025). The application features a three-column responsive layout, dynamic filtering, year-over-year comparisons, full WCAG 2.1 AA accessibility compliance, multi-series line charts, and a share modal with LinkedIn integration.
+
+**Content Language**: Spanish (España) - All UI text, titles, and descriptions are in Spanish.
 
 **No build process required** - this is a vanilla JavaScript ES6+ application that runs directly in the browser.
 
@@ -40,15 +42,20 @@ The application uses a responsive three-column layout:
    - Download and share buttons (footer)
 
 2. **Middle Column** (Current Selection):
-   - List of selected series with color swatches
-   - Selection count
+   - Interactive list of selected series with color swatches
+   - **Soft deselection**: Click any series to toggle visibility (show/hide on chart)
+   - Eye icon indicators: open eye (visible) / crossed eye (hidden)
+   - Grayed-out appearance for hidden series (60% opacity)
+   - Selection count shows total series (regardless of visibility)
    - Clear selection button
    - Visible on desktop, stacks below chart on mobile/tablet
+   - Fully keyboard accessible (Tab + Enter/Space to toggle)
 
 3. **Right Column** (Filter Panel):
    - Hierarchical filter controls
    - Modal dialog on mobile/tablet
-   - Fixed column on desktop (400px width)
+   - Fixed column on desktop (400px default width)
+   - **Dynamic expansion**: Expands to 600px when Primary or Secondary Causes are selected
    - Accessible via keyboard (Escape to close)
 
 ### Data Flow Pipeline
@@ -70,14 +77,27 @@ CSV File → DataLoader → DataTransformer → FilterManager ↔ MortalityChart
 - DEBUG flag for development logging
 - Set `DEBUG: true` to enable console.log statements
 
-**main.js (MortalityDashboard)**
-- Application orchestrator
-- Coordinates all modules via dependency injection
-- Handles filter state changes through callback pattern
-- Manages URL state for sharing (`updateURL()`)
-- Focus management for accessibility (panel open/close)
-- ARIA state updates (aria-expanded, aria-hidden)
-- Entry point: instantiated on `DOMContentLoaded`
+**main.js (MortalityDashboard & ModalManager)**
+- **MortalityDashboard**: Application orchestrator
+  - Coordinates all modules via dependency injection
+  - Handles filter state changes through callback pattern
+  - Manages URL state for sharing (`updateURL()`)
+  - Focus management for accessibility (panel open/close)
+  - ARIA state updates (aria-expanded, aria-hidden)
+  - Entry point: instantiated on `DOMContentLoaded`
+  - **Download button**: Shows "Próximamente" (Coming Soon) notification with animated pill
+  - **Share button**: Opens modal with copy link and LinkedIn CTA
+  - **Soft deselection**: `toggleSeriesVisibility(seriesId)` method
+    - Stores series with `visible` property (default: true)
+    - Preserves visibility state when filters change
+    - Only renders visible series to chart
+    - Updates selection list with toggle callbacks
+- **ModalManager**: Share modal handler
+  - Opens/closes share modal with accessibility support
+  - Focus trap and Escape key handling
+  - Copy to clipboard functionality with visual feedback
+  - Returns focus to trigger element on close
+  - Prevents body scroll when modal is open
 
 **dataLoader.js (DataLoader)**
 - Loads CSV file from `data/` folder using `d3.csv()`
@@ -104,13 +124,24 @@ CSV File → DataLoader → DataTransformer → FilterManager ↔ MortalityChart
 - Manages filter panel UI state
 - Hierarchical filter structure: Species → Region → Year → Metric Type → Causes
 - **Default state**: Atlantic Salmon, all three regions (X, XI, XII), both years, total mortality
+- **Terminology**: Uses "Causas Secundarias" (Secondary Causes), not "Enfermedades Secundarias"
 - **Data validation**: Enforces scale type restrictions:
   - "Total Mortality" cannot use "Percentage Scale" (auto-switches to Absolute)
   - "Percentage Scale" cannot use "Total Mortality" (auto-switches to Primary Causes)
 - Dynamically shows/hides cause sections based on metric type
+- **Dynamic panel expansion**: Adds `.expanded` class when Primary/Secondary Causes selected
+  - Default width: 400px
+  - Expanded width: 600px
+  - Smooth CSS transition between states
 - Uses event delegation for checkbox/select change events
 - Invokes callback (`onFilterChange`) on any state change
-- Updates selection list with semantic `<ul>/<li>` structure and color swatches
+- **Interactive selection list** (`updateSelectionList(series, onToggle)`):
+  - Renders series as clickable buttons with `role="button"`
+  - Shows eye icon (visible) or crossed-eye icon (hidden)
+  - Applies `.active` or `.inactive` classes based on visibility
+  - Inline opacity styles: 100% (visible), 30-50% (hidden)
+  - Attaches click and keyboard (Enter/Space) event listeners
+  - Calls `onToggle(seriesId)` callback when clicked
 - **Accessibility features**:
   - All form inputs have unique IDs and associated labels
   - ARIA state management (aria-expanded, aria-hidden)
@@ -191,6 +222,29 @@ CSV File → DataLoader → DataTransformer → FilterManager ↔ MortalityChart
 - Calculates percentage based on total mortality: `(cause_value / mort_total_real) * 100`
 - `datos_percentage.csv` exists but is not used in current implementation
 
+## UI Content and Localization
+
+### Page Content (Spanish)
+
+All user-facing content is in Spanish:
+
+**Page Title**: "Dashboard de Análisis de Mortalidad Acuícola"
+**Main Heading**: "Dashboard de Análisis de Mortalidad Acuícola"
+**Section Title**: "Análisis de Tendencias de Mortalidad"
+**Description**: "Herramienta interactiva para visualizar y filtrar tendencias de mortalidad por especie, región y causas específicas."
+
+**Important Terminology**:
+- Use "Causas Secundarias" (Secondary Causes), NOT "Enfermedades Secundarias"
+- All filter labels, button text, and UI messages are in Spanish
+- LinkedIn CTA: "Contactar al Desarrollador"
+- Coming Soon: "Próximamente"
+
+### Contact Information
+
+**Developer LinkedIn**: https://www.linkedin.com/in/agustn-pina
+- Linked in share modal "Contactar en LinkedIn" button
+- Opens in new tab with `rel="noopener noreferrer"`
+
 ## Styling Guidelines
 
 ### Official Sernapesca Color Palette
@@ -242,6 +296,21 @@ All interactive elements follow a consistent design pattern to match icon button
 - Custom arrow icon (data URL SVG)
 - Hover: background-color var(--color-bg-secondary), border-color var(--color-accent)
 - Focus: 3px solid blue outline, box-shadow rgba(0, 102, 204, 0.1)
+
+**Modal Buttons**:
+- `.btn-primary`: Blue accent button for primary actions (Copy link)
+  - Background: var(--color-accent) (#0066cc)
+  - Hover: darker shade with translateY(-1px) lift
+- `.btn-linkedin`: LinkedIn-branded button (#0077b5)
+  - Includes external link icon
+  - Opens LinkedIn profile in new tab
+
+**Coming Soon Notification** (`.coming-soon-notification`):
+- Position: absolute, positioned above parent button
+- Background: var(--color-warning) (#ffc107)
+- Border-radius: 16px (pill-shaped)
+- Animation: fadeInOut 2s (appears, holds, fades out)
+- ARIA: `role="status"` with `aria-live="polite"`
 
 **Focus Indicators**:
 - All interactive elements: 3px solid blue outline (#0066cc) with 2px offset
@@ -302,6 +371,14 @@ The application uses proper semantic elements throughout:
 - `aria-labelledby="filter-panel-title"`: Labels dialog
 - `aria-hidden="true/false"`: Dynamically updated when opening/closing
 - Toggle button has `aria-expanded="false/true"` and `aria-controls="filter-panel"`
+
+**Share Modal (Dialog Pattern)**:
+- `role="dialog"`: Identifies as modal dialog
+- `aria-modal="true"`: Indicates modal behavior
+- `aria-labelledby="share-modal-title"`: Labels modal with "Compartir Dashboard"
+- Focus trap: Focus contained within modal when open
+- Escape key support: Closes modal
+- Returns focus to trigger button on close
 
 **Live Regions**:
 - Results count: `role="status" aria-live="polite" aria-atomic="true"`
