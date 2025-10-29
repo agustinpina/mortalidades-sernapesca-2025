@@ -8,17 +8,15 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
+    <!-- Skip Link for Keyboard Navigation -->
+    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
     <!-- Header Navigation -->
     <header class="main-header">
         <nav class="navigation">
             <div class="nav-logo">
                 <h1>Sernapesca Mortality Dashboard</h1>
             </div>
-            <ul class="nav-links">
-                <li><a href="#" class="active">Dashboard</a></li>
-                <li><a href="#data">Data</a></li>
-                <li><a href="#about">About</a></li>
-            </ul>
         </nav>
     </header>
 
@@ -33,52 +31,57 @@
     </section>
 
     <!-- Filter Overlay Backdrop -->
-    <div class="filter-overlay" id="filter-overlay"></div>
+    <div class="filter-overlay" id="filter-overlay" aria-hidden="true" role="presentation"></div>
 
     <!-- Main Content Area -->
-    <main class="content-wrapper">
+    <main class="content-wrapper" id="main-content">
         <!-- Chart Container (Left Column) -->
         <div class="chart-container">
             <div class="chart-header">
-                <h3 class="chart-title">
+                <h2 class="chart-title">
                     Tendencias de mortalidad por especie y región
-                    <span id="results-count">0 Resultados</span>
-                </h3>
-                <button class="filter-toggle-btn" id="filter-toggle-btn" aria-label="Mostrar panel de filtros">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                    <span id="results-count" role="status" aria-live="polite" aria-atomic="true">0 Resultados</span>
+                </h2>
+                <button class="filter-toggle-btn" id="filter-toggle-btn" aria-label="Mostrar panel de filtros" aria-expanded="false" aria-controls="filter-panel">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path d="M3 3h14a1 1 0 011 1v2a1 1 0 01-.293.707L12 12.414V17a1 1 0 01-.553.894l-2 1A1 1 0 018 18v-5.586L2.293 6.707A1 1 0 012 6V4a1 1 0 011-1z"/>
                     </svg>
                     Filtros
                 </button>
             </div>
 
-            <div id="chart" class="chart-area"></div>
+            <div id="chart" class="chart-area" role="img" aria-label="Gráfico de líneas mostrando tendencias de mortalidad" aria-describedby="chart-description"></div>
+            <div id="chart-description" class="visually-hidden">
+                Gráfico de líneas interactivo que muestra las tendencias de mortalidad de salmones
+                en Chile, filtradas por especie, región y causa. Use los filtros para personalizar
+                la visualización.
+            </div>
         </div>
 
         <!-- Current Selection (Middle Column) -->
         <div class="current-selection-column">
             <div class="current-selection-chart">
                 <div class="selection-header">
-                    <span class="selection-label">Selección (<span id="selection-count">0</span>)</span>
-                    <button class="clear-btn" id="clear-selection">Limpiar</button>
+                    <span class="selection-label">Selección (<span id="selection-count" role="status" aria-live="polite" aria-atomic="true">0</span>)</span>
+                    <button class="clear-btn" id="clear-selection" aria-label="Limpiar todas las selecciones">Limpiar</button>
                 </div>
-                <div class="selection-list" id="selection-list">
-                    <p class="empty-state">No hay series seleccionadas</p>
+                <div class="selection-list" id="selection-list" role="list" aria-label="Series seleccionadas en el gráfico">
+                    <p class="empty-state" role="status">No hay series seleccionadas</p>
                 </div>
             </div>
         </div>
 
         <!-- Filter Panel (Right Column) -->
-        <aside class="filter-panel" id="filter-panel">
+        <aside class="filter-panel" id="filter-panel" role="dialog" aria-modal="true" aria-labelledby="filter-panel-title" aria-hidden="true">
             <div class="panel-header">
-                <button class="icon-btn" id="reset-filters" aria-label="Restablecer filtros">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <button class="icon-btn" id="reset-filters" aria-label="Restablecer filtros a valores predeterminados">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path d="M 7.1601562 3 L 8.7617188 5 L 18 5 C 18.551 5 19 5.448 19 6 L 19 15 L 16 15 L 20 20 L 24 15 L 21 15 L 21 6 C 21 4.346 19.654 3 18 3 L 7.1601562 3 z M 4 4 L 0 9 L 3 9 L 3 18 C 3 19.654 4.346 21 6 21 L 16.839844 21 L 15.238281 19 L 6 19 C 5.449 19 5 18.552 5 18 L 5 9 L 8 9 L 4 4 z"></path>
                     </svg>
                 </button>
-                <h3>CONFIGURACIÓN</h3>
-                <button class="icon-btn panel-close" id="panel-close" aria-label="Cerrar panel">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                <h2 id="filter-panel-title">CONFIGURACIÓN</h2>
+                <button class="icon-btn panel-close" id="panel-close" aria-label="Cerrar panel de filtros">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path d="M4.646 4.646a.5.5 0 0 1 .708 0L10 9.293l4.646-4.647a.5.5 0 0 1 .708.708L10.707 10l4.647 4.646a.5.5 0 0 1-.708.708L10 10.707l-4.646 4.647a.5.5 0 0 1-.708-.708L9.293 10 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                     </svg>
                 </button>
@@ -91,9 +94,9 @@
                 <div class="filter-column-left">
                     <!-- Metric Type Filter -->
                     <div class="filter-section">
-                        <h4 class="filter-title">1. Tipo de Métrica</h4>
+                        <label for="metric-select" class="filter-title">1. Tipo de Métrica</label>
                         <select id="metric-select" class="custom-select" name="metric">
-                            <option value="total" selected>Mortalidad Total</option>
+                            <option value="total">Mortalidad Total</option>
                             <option value="primary">Causas Primarias</option>
                             <option value="secondary">Enfermedades Secundarias</option>
                         </select>
@@ -101,80 +104,81 @@
 
                     <!-- Y-Axis Scale -->
                     <div class="filter-section">
-                        <h4 class="filter-title">2. Escala del Eje Y</h4>
+                        <label for="scale-select" class="filter-title">2. Escala del Eje Y</label>
                         <select id="scale-select" class="custom-select" name="scale">
-                            <option value="absolute" selected>Conteo Absoluto</option>
+                            <option value="absolute">Conteo Absoluto</option>
                             <option value="percentage">Porcentaje (%)</option>
                         </select>
                     </div>
 
                     <!-- Species Filter -->
-                    <div class="filter-section">
-                        <h4 class="filter-title">3. Especie</h4>
-                        <div class="checkbox-group" id="species-filters">
+                    <fieldset class="filter-section">
+                        <legend class="filter-title">3. Especie</legend>
+                        <div class="checkbox-group" id="species-filters" role="group" aria-label="Seleccionar especies">
                             <!-- Populated dynamically -->
                         </div>
-                    </div>
+                    </fieldset>
 
                     <!-- Region Filter -->
-                    <div class="filter-section">
-                        <h4 class="filter-title">4. Región</h4>
-                        <div class="checkbox-group" id="region-filters">
+                    <fieldset class="filter-section">
+                        <legend class="filter-title">4. Región</legend>
+                        <div class="checkbox-group" id="region-filters" role="group" aria-label="Seleccionar regiones">
                             <!-- Populated dynamically -->
                         </div>
-                    </div>
+                    </fieldset>
 
                     <!-- Year Filter -->
-                    <div class="filter-section">
-                        <h4 class="filter-title">5. Año</h4>
-                        <div class="checkbox-group" id="year-filters">
+                    <fieldset class="filter-section">
+                        <legend class="filter-title">5. Año</legend>
+                        <div class="checkbox-group" id="year-filters" role="group" aria-label="Seleccionar años">
                             <!-- Populated dynamically -->
                         </div>
-                    </div>
+                    </fieldset>
                 </div>
 
                 <!-- Right Column: Cause Filters -->
                 <div class="filter-column-right">
                     <!-- Primary Causes Filter (shown when metric=primary) -->
-                    <div class="filter-section" id="primary-causes-section" style="display: none;">
-                        <h4 class="filter-title">6. Causas Primarias</h4>
-                        <div class="checkbox-group" id="primary-causes-filters">
+                    <fieldset class="filter-section" id="primary-causes-section" style="display: none;">
+                        <legend class="filter-title">6. Causas Primarias</legend>
+                        <div class="checkbox-group" id="primary-causes-filters" role="group" aria-label="Seleccionar causas primarias">
                             <!-- Populated dynamically -->
                         </div>
-                    </div>
+                    </fieldset>
 
                     <!-- Secondary Diseases Filter (shown when metric=secondary) -->
-                    <div class="filter-section" id="secondary-diseases-section" style="display: none;">
-                        <h4 class="filter-title">6. Enfermedades Secundarias</h4>
-                        <div class="checkbox-group" id="secondary-diseases-filters">
+                    <fieldset class="filter-section" id="secondary-diseases-section" style="display: none;">
+                        <legend class="filter-title">6. Enfermedades Secundarias</legend>
+                        <div class="checkbox-group" id="secondary-diseases-filters" role="group" aria-label="Seleccionar enfermedades secundarias">
                             <!-- Populated dynamically -->
                         </div>
-                    </div>
+                    </fieldset>
                 </div>
 
             </div>
 
             <!-- Warning Message -->
-            <div class="warning-message" id="line-limit-warning" style="display: none;">
-                ⚠️ Se pueden mostrar máximo 4 líneas. Por favor deseleccione algunas opciones.
+            <div class="warning-message" id="line-limit-warning" role="alert" aria-live="assertive" aria-atomic="true" style="display: none;">
+                <span aria-hidden="true">⚠️</span>
+                Se pueden mostrar máximo 6 líneas. Por favor deseleccione algunas opciones.
             </div>
         </aside>
     </main>
 
     <!-- Footer -->
-    <footer class="main-footer">
+    <footer class="main-footer" aria-label="Pie de página con acciones y atribución">
         <div class="footer-content">
             <span class="attribution">CC-BY | Sernapesca 2024-2025</span>
             <div class="footer-actions">
-                <button class="icon-btn" id="download-chart" aria-label="Descargar gráfico">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                <button class="icon-btn" id="download-chart" aria-label="Descargar gráfico actual como imagen PNG o SVG">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path d="M10 12.5a.5.5 0 01-.35-.15l-3-3a.5.5 0 01.7-.7L10 11.29l2.65-2.64a.5.5 0 01.7.7l-3 3a.5.5 0 01-.35.15z"/>
                         <path d="M10 2a.5.5 0 01.5.5v10a.5.5 0 01-1 0v-10A.5.5 0 0110 2z"/>
                         <path d="M4 14a.5.5 0 01.5.5v2h11v-2a.5.5 0 011 0v2.5a.5.5 0 01-.5.5h-12a.5.5 0 01-.5-.5v-2.5A.5.5 0 014 14z"/>
                     </svg>
                 </button>
-                <button class="icon-btn" id="share-chart" aria-label="Compartir gráfico">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                <button class="icon-btn" id="share-chart" aria-label="Copiar enlace para compartir gráfico actual">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path d="M15 13a3 3 0 00-2.1.86l-4.8-2.77a3 3 0 000-2.18l4.8-2.77a3 3 0 10-.9-1.5l-4.8 2.77a3 3 0 100 5.18l4.8 2.77A3 3 0 1015 13z"/>
                     </svg>
                 </button>

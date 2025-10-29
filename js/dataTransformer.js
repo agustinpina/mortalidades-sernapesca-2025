@@ -3,6 +3,8 @@
  * Handles data filtering, aggregation, and transformation for visualization
  */
 
+import { CONFIG } from './config.js';
+
 export class DataTransformer {
     constructor() {
         /**
@@ -20,13 +22,15 @@ export class DataTransformer {
          * - #1939B7: More vibrant primary blue (was #00224B) - improved readability
          * - Other colors unchanged for consistency
          *
-         * Example with 4 series (max displayed):
+         * Example with 6 series (max displayed):
          * - Series 0: #081935 (Dark Navy Blue - Enhanced)
          * - Series 1: #1939B7 (Navy Blue - Vibrant)
          * - Series 2: #7076E8 (Periwinkle Blue)
          * - Series 3: #009BE1 (Sky Blue)
+         * - Series 4: #74D0C7 (Aquamarine)
+         * - Series 5: #B8E4F2 (Pale Baby Blue)
          *
-         * Example with 8 series (before limiting to 4):
+         * Example with 8 series (before limiting to 6):
          * - Series 0-5: All 6 unique colors
          * - Series 6: Cycles back to #081935 (Dark Navy Blue)
          * - Series 7: Cycles to #1939B7 (Navy Blue)
@@ -51,8 +55,9 @@ export class DataTransformer {
         const colorIndex = index % this.officialColors.length;
         const color = this.officialColors[colorIndex];
 
-        // Log color assignment for debugging
-        console.log(`Series ${index} assigned color ${colorIndex + 1}/6: ${color}`);
+        if (CONFIG.DEBUG) {
+            console.log(`Series ${index} assigned color ${colorIndex + 1}/6: ${color}`);
+        }
 
         return color;
     }
@@ -120,7 +125,7 @@ export class DataTransformer {
             // Sort by week number
             const sortedValues = values.sort((a, b) => a.week - b.week);
 
-            const serie = {
+            const seriesItem = {
                 id: seriesId,
                 label: values[0].displayLabel,
                 species: values[0].especie,
@@ -137,13 +142,15 @@ export class DataTransformer {
                 }))
             };
 
-            series.push(serie);
+            series.push(seriesItem);
             colorIndex++;
         });
 
         // Log summary of color assignments
-        console.log(`Total mortality series created: ${series.length}`);
-        console.log(`Colors used: ${Math.min(series.length, this.officialColors.length)} of ${this.officialColors.length} available`);
+        if (CONFIG.DEBUG) {
+            console.log(`Total mortality series created: ${series.length}`);
+            console.log(`Colors used: ${Math.min(series.length, this.officialColors.length)} of ${this.officialColors.length} available`);
+        }
 
         return series;
     }
@@ -180,7 +187,7 @@ export class DataTransformer {
 
                 if (comboData.length === 0) return;
 
-                const serie = {
+                const seriesItem = {
                     id: `${combo.species}_${combo.region}_${combo.year}_${causeField}`,
                     label: `${causeLabel} - ${combo.species} - ${combo.region} - ${combo.year}`,
                     species: combo.species,
@@ -198,14 +205,16 @@ export class DataTransformer {
                     }))
                 };
 
-                series.push(serie);
+                series.push(seriesItem);
                 colorIndex++;
             });
         });
 
         // Log summary of color assignments
-        console.log(`Cause-specific series created: ${series.length}`);
-        console.log(`Colors used: ${Math.min(series.length, this.officialColors.length)} of ${this.officialColors.length} available`);
+        if (CONFIG.DEBUG) {
+            console.log(`Cause-specific series created: ${series.length}`);
+            console.log(`Colors used: ${Math.min(series.length, this.officialColors.length)} of ${this.officialColors.length} available`);
+        }
 
         return series;
     }
@@ -282,8 +291,8 @@ export class DataTransformer {
      * @returns {Array} Series with percentage values
      */
     convertToPercentages(series) {
-        return series.map(serie => {
-            const convertedValues = serie.values.map(point => {
+        return series.map(seriesItem => {
+            const convertedValues = seriesItem.values.map(point => {
                 // Calculate percentage based on total mortality
                 const total = point.rawData.mort_total_real;
                 const percentage = total > 0 ? (point.value / total) * 100 : 0;
@@ -296,24 +305,24 @@ export class DataTransformer {
             });
 
             return {
-                ...serie,
+                ...seriesItem,
                 values: convertedValues
             };
         });
     }
 
     /**
-     * Limit series to maximum of 4 lines
+     * Limit series to maximum of 6 lines
      * @param {Array} series - Series data
-     * @param {Number} maxLines - Maximum number of lines (default: 4)
+     * @param {Number} maxLines - Maximum number of lines (default: 6)
      * @returns {Object} { series: limited series, exceeded: boolean }
      */
-    limitSeries(series, maxLines = 4) {
+    limitSeries(series, maxLines = 6) {
         if (series.length <= maxLines) {
             return { series, exceeded: false };
         }
 
-        // Sort by total mortality (sum of all values) and take top 4
+        // Sort by total mortality (sum of all values) and take top 6
         const sortedSeries = series
             .map(s => ({
                 ...s,

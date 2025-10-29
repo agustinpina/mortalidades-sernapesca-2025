@@ -6,7 +6,6 @@
 export class DataLoader {
     constructor() {
         this.summaryData = null;
-        this.percentageData = null;
     }
 
     /**
@@ -14,23 +13,18 @@ export class DataLoader {
      */
     async loadData() {
         try {
-            // Load both datasets in parallel
-            const [summaryData, percentageData] = await Promise.all([
-                d3.csv('../data/datos_summary.csv'),
-                d3.csv('../data/datos_percentage.csv')
-            ]);
+            // Load summary dataset
+            const summaryData = await d3.csv('../data/datos_summary.csv');
 
             // Parse and enrich the data
             this.summaryData = this.parseData(summaryData);
-            this.percentageData = this.parseData(percentageData);
 
             return {
-                summary: this.summaryData,
-                percentage: this.percentageData
+                summary: this.summaryData
             };
         } catch (error) {
             console.error('Error loading data:', error);
-            throw new Error('Failed to load CSV data files');
+            throw new Error(`Failed to load CSV data files: ${error.message}`);
         }
     }
 

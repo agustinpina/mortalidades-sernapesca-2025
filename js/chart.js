@@ -3,6 +3,8 @@
  * D3.js chart rendering and interaction logic
  */
 
+import { CONFIG } from './config.js';
+
 export class MortalityChart {
     constructor(containerId) {
         this.containerId = containerId;
@@ -13,6 +15,17 @@ export class MortalityChart {
         this.tooltip = null;
         this.currentSeries = [];
         this.scaleType = 'absolute';
+
+        // Chart constants
+        this.CHART_MARGINS = { top: 40, right: 40, bottom: 60, left: 80 };
+        this.POINT_RADIUS_DEFAULT = 3.5;
+        this.POINT_RADIUS_HOVER = 6;
+        this.LINE_WIDTH_DEFAULT = 2.5;
+        this.LINE_WIDTH_HIGHLIGHTED = 3.5;
+        this.TRANSITION_FAST = 150;
+        this.TRANSITION_TOOLTIP = 200;
+        this.TRANSITION_NORMAL = 300;
+        this.TRANSITION_SLOW = 500;
 
         this.initializeTooltip();
     }
@@ -29,15 +42,12 @@ export class MortalityChart {
         const width = containerNode.clientWidth;
         const height = containerNode.clientHeight;
 
-        // Set margins
-        const margin = { top: 40, right: 40, bottom: 60, left: 80 };
-
         this.dimensions = {
             width,
             height,
-            margin,
-            innerWidth: width - margin.left - margin.right,
-            innerHeight: height - margin.top - margin.bottom
+            margin: this.CHART_MARGINS,
+            innerWidth: width - this.CHART_MARGINS.left - this.CHART_MARGINS.right,
+            innerHeight: height - this.CHART_MARGINS.top - this.CHART_MARGINS.bottom
         };
 
         // Create SVG
@@ -47,7 +57,7 @@ export class MortalityChart {
 
         // Create main group
         this.g = this.svg.append('g')
-            .attr('transform', `translate(${margin.left},${margin.top})`);
+            .attr('transform', `translate(${this.CHART_MARGINS.left},${this.CHART_MARGINS.top})`);
 
         // Create groups for different layers
         this.gridGroup = this.g.append('g').attr('class', 'grid-layer');
@@ -193,9 +203,8 @@ export class MortalityChart {
             .attr('class', 'axis-label axis-label-y')
             .attr('x', -10)
             .attr('y', -20)
-            .style('text-anchor', 'middle')
-            .attr('text-anchor', 'middle')  // Set as attribute to ensure centering
-            .text(scaleType === 'percentage' ? '% Mortalidad' : 'N° Muertes');
+            .attr('text-anchor', 'middle')
+            .text(scaleType === 'percentage' ? '% Mortalidad' : 'N° Mortalidad');
     }
 
     /**
@@ -238,7 +247,7 @@ export class MortalityChart {
         // Exit
         lines.exit()
             .transition()
-            .duration(300)
+            .duration(this.TRANSITION_NORMAL)
             .style('opacity', 0)
             .remove();
 
@@ -253,7 +262,7 @@ export class MortalityChart {
             .attr('stroke', d => d.color)
             .attr('stroke-dasharray', d => d.lineStyle === 'dashed' ? '5,5' : '0')
             .transition()
-            .duration(500)
+            .duration(this.TRANSITION_SLOW)
             .style('opacity', 1);
 
         // Add hover effects
@@ -290,7 +299,7 @@ export class MortalityChart {
         // Exit
         points.exit()
             .transition()
-            .duration(300)
+            .duration(this.TRANSITION_NORMAL)
             .attr('r', 0)
             .remove();
 
@@ -306,8 +315,8 @@ export class MortalityChart {
             .attr('cy', d => this.scales.y(d.value))
             .attr('stroke', d => d.color)
             .transition()
-            .duration(500)
-            .attr('r', 3.5);
+            .duration(this.TRANSITION_SLOW)
+            .attr('r', this.POINT_RADIUS_DEFAULT);
 
         // Add hover effects
         this.pointsGroup.selectAll('.chart-point')
@@ -316,16 +325,16 @@ export class MortalityChart {
                 // Enlarge point
                 d3.select(event.target)
                     .transition()
-                    .duration(150)
-                    .attr('r', 6);
+                    .duration(this.TRANSITION_FAST)
+                    .attr('r', this.POINT_RADIUS_HOVER);
             })
             .on('mouseout', (event) => {
                 this.hideTooltip();
                 // Restore point size
                 d3.select(event.target)
                     .transition()
-                    .duration(150)
-                    .attr('r', 3.5);
+                    .duration(this.TRANSITION_FAST)
+                    .attr('r', this.POINT_RADIUS_DEFAULT);
             });
     }
 
@@ -391,7 +400,7 @@ export class MortalityChart {
             .style('left', `${event.pageX + 15}px`)
             .style('top', `${event.pageY - 28}px`)
             .transition()
-            .duration(200)
+            .duration(this.TRANSITION_TOOLTIP)
             .style('opacity', 1);
     }
 
@@ -401,7 +410,7 @@ export class MortalityChart {
     hideTooltip() {
         this.tooltip
             .transition()
-            .duration(200)
+            .duration(this.TRANSITION_TOOLTIP)
             .style('opacity', 0);
     }
 
@@ -442,21 +451,47 @@ export class MortalityChart {
      */
     downloadPNG() {
         const svgNode = this.svg.node();
-        const svgString = new XMLSerializer().serializeToString(svgNode);
+
+        // Clone the SVG to avoid modifying the original
+        const svgClone = svgNode.cloneNode(true);
+
+        // Inline all computed styles to preserve appearance
+        this.inlineStyles(svgClone);
+
+        // Get SVG dimensions
+        const width = this.dimensions.width;
+        const height = this.dimensions.height;
+
+        // Serialize the styled SVG with proper namespace and dimensions
+        const svgString = new XMLSerializer().serializeToString(svgClone);
+
+        // Wrap in proper SVG with explicit dimensions
+        const fullSvg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+${svgString.replace(/<svg[^>]*>/, '').replace(/<\/svg>$/, '')}
+</svg>`;
+
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
 
-        canvas.width = this.dimensions.width * 2; // 2x for better quality
-        canvas.height = this.dimensions.height * 2;
+        // Use 2x resolution for better quality
+        const scale = 2;
+        canvas.width = width * scale;
+        canvas.height = height * scale;
 
         const img = new Image();
-        const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+        const svgBlob = new Blob([fullSvg], { type: 'image/svg+xml;charset=utf-8' });
         const url = URL.createObjectURL(svgBlob);
 
         img.onload = () => {
+            // Fill white background
             ctx.fillStyle = 'white';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            // Scale for high resolution
+            ctx.scale(scale, scale);
+            ctx.drawImage(img, 0, 0, width, height);
             URL.revokeObjectURL(url);
 
             canvas.toBlob((blob) => {
@@ -469,7 +504,104 @@ export class MortalityChart {
             });
         };
 
+        img.onerror = (error) => {
+            console.error('Failed to load SVG for export:', error);
+            if (CONFIG.DEBUG) console.log('SVG content:', fullSvg.substring(0, 500));
+            alert('Failed to export chart. Please try again.');
+            URL.revokeObjectURL(url);
+        };
+
         img.src = url;
+    }
+
+    /**
+     * Inline all computed styles into SVG elements
+     * This ensures styles are preserved when exporting
+     */
+    inlineStyles(svgElement) {
+        // Process the SVG root element first
+        const originalSvg = this.svg.node();
+        const computedSvgStyle = window.getComputedStyle(originalSvg);
+
+        // Get all elements from both the clone and original
+        const clonedElements = Array.from(svgElement.querySelectorAll('*'));
+        const originalElements = Array.from(originalSvg.querySelectorAll('*'));
+
+        if (CONFIG.DEBUG) console.log('Inlining styles for', clonedElements.length, 'elements');
+
+        // Match elements by position in the tree
+        clonedElements.forEach((clonedEl, index) => {
+            if (index >= originalElements.length) return;
+
+            const originalEl = originalElements[index];
+            const computedStyle = window.getComputedStyle(originalEl);
+
+            // Critical style properties to preserve
+            const stylesToInline = [
+                'fill', 'stroke', 'stroke-width', 'stroke-dasharray',
+                'stroke-linecap', 'stroke-linejoin', 'stroke-opacity',
+                'font-family', 'font-size', 'font-weight', 'font-style',
+                'text-anchor', 'dominant-baseline',
+                'opacity', 'fill-opacity'
+            ];
+
+            const styles = {};
+            stylesToInline.forEach(prop => {
+                const value = computedStyle.getPropertyValue(prop);
+
+                // Skip default/inherited values that shouldn't be explicitly set
+                if (!value || value === '' || value === 'none' || value === 'normal') {
+                    return;
+                }
+
+                // Skip opacity values of 1 (fully opaque is the default)
+                if ((prop === 'opacity' || prop === 'fill-opacity' || prop === 'stroke-opacity') && value === '1') {
+                    return;
+                }
+
+                // For fill and stroke, check if they're actually set on the element
+                // vs just inherited defaults
+                if (prop === 'fill' || prop === 'stroke') {
+                    const explicitValue = originalEl.getAttribute(prop) ||
+                                         originalEl.style.getPropertyValue(prop);
+
+                    // If it's black (rgb(0,0,0)) and not explicitly set, skip it
+                    if (value === 'rgb(0, 0, 0)' && !explicitValue) {
+                        return;
+                    }
+
+                    // If it's 'none' for stroke and not explicitly set, skip it
+                    if (value === 'none' && !explicitValue) {
+                        return;
+                    }
+                }
+
+                styles[prop] = value;
+            });
+
+            // Build inline style string
+            let inlineStyle = Object.entries(styles)
+                .map(([prop, value]) => `${prop}:${value}`)
+                .join(';');
+
+            if (inlineStyle) {
+                const existingStyle = clonedEl.getAttribute('style') || '';
+                // Append new styles, ensuring no duplicate semicolons
+                const finalStyle = existingStyle
+                    ? `${existingStyle};${inlineStyle}`
+                    : inlineStyle;
+                clonedEl.setAttribute('style', finalStyle);
+            }
+
+            // Log first few elements for debugging
+            if (CONFIG.DEBUG && index < 5) {
+                console.log(`Element ${index}:`, clonedEl.tagName,
+                    'classes:', clonedEl.className.baseVal || clonedEl.className,
+                    'styles:', styles);
+            }
+        });
+
+        if (CONFIG.DEBUG) console.log('Style inlining complete');
     }
 
     /**

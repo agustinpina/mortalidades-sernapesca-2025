@@ -3,6 +3,7 @@
  * Main application orchestration
  */
 
+import { CONFIG } from './config.js';
 import { DataLoader } from './dataLoader.js';
 import { DataTransformer } from './dataTransformer.js';
 import { FilterManager } from './filters.js';
@@ -29,7 +30,7 @@ class MortalityDashboard {
 
             // Load data
             this.data = await this.dataLoader.loadData();
-            console.log('Data loaded successfully:', this.data);
+            if (CONFIG.DEBUG) console.log('Data loaded successfully:', this.data);
 
             // Initialize chart
             this.chart = new MortalityChart('chart');
@@ -48,10 +49,7 @@ class MortalityDashboard {
             // Render initial state
             this.handleFilterChange(this.filterManager.getState());
 
-            // Hide loading state
-            this.hideLoading();
-
-            console.log('Dashboard initialized successfully');
+            if (CONFIG.DEBUG) console.log('Dashboard initialized successfully');
         } catch (error) {
             console.error('Failed to initialize dashboard:', error);
             this.showError('Failed to load data. Please refresh the page.');
@@ -62,7 +60,7 @@ class MortalityDashboard {
      * Handle filter changes
      */
     handleFilterChange(filterState) {
-        console.log('Filter state changed:', filterState);
+        if (CONFIG.DEBUG) console.log('Filter state changed:', filterState);
 
         // Filter the data
         const filteredData = this.dataTransformer.filterData(
@@ -70,7 +68,7 @@ class MortalityDashboard {
             filterState
         );
 
-        console.log('Filtered data:', filteredData);
+        if (CONFIG.DEBUG) console.log('Filtered data:', filteredData);
 
         // Transform to series
         let series = this.dataTransformer.transformToSeries(
@@ -78,17 +76,17 @@ class MortalityDashboard {
             filterState
         );
 
-        console.log('Series before limit:', series);
+        if (CONFIG.DEBUG) console.log('Series before limit:', series);
 
         // Apply percentage conversion if needed
         if (filterState.scaleType === 'percentage') {
             series = this.dataTransformer.convertToPercentages(series);
         }
 
-        // Limit to 4 series and check if exceeded
-        const { series: limitedSeries, exceeded } = this.dataTransformer.limitSeries(series, 4);
+        // Limit to 6 series and check if exceeded
+        const { series: limitedSeries, exceeded } = this.dataTransformer.limitSeries(series, 6);
 
-        console.log('Series after limit:', limitedSeries, 'Exceeded:', exceeded);
+        if (CONFIG.DEBUG) console.log('Series after limit:', limitedSeries, 'Exceeded:', exceeded);
 
         // Update UI
         this.filterManager.updateSelectionList(limitedSeries);
@@ -117,14 +115,27 @@ class MortalityDashboard {
             filterToggleBtn.addEventListener('click', () => {
                 filterPanel.classList.add('open');
                 filterOverlay.classList.add('visible');
+                filterPanel.setAttribute('aria-hidden', 'false');
+                filterOverlay.setAttribute('aria-hidden', 'false');
+                filterToggleBtn.setAttribute('aria-expanded', 'true');
                 document.body.style.overflow = 'hidden'; // Prevent body scroll
+
+                // Focus first interactive element in panel
+                const firstButton = filterPanel.querySelector('button');
+                if (firstButton) {
+                    setTimeout(() => firstButton.focus(), 100);
+                }
             });
 
             // Close filter panel
             const closePanel = () => {
                 filterPanel.classList.remove('open');
                 filterOverlay.classList.remove('visible');
+                filterPanel.setAttribute('aria-hidden', 'true');
+                filterOverlay.setAttribute('aria-hidden', 'true');
+                filterToggleBtn.setAttribute('aria-expanded', 'false');
                 document.body.style.overflow = ''; // Restore body scroll
+                filterToggleBtn.focus(); // Return focus to toggle button
             };
 
             if (panelCloseBtn) {
@@ -230,39 +241,6 @@ class MortalityDashboard {
     }
 
     /**
-     * Load filter state from URL parameters
-     */
-    loadStateFromURL() {
-        const params = new URLSearchParams(window.location.search);
-
-        const state = {};
-
-        if (params.has('species')) {
-            state.species = params.get('species').split(',');
-        }
-        if (params.has('regions')) {
-            state.regions = params.get('regions').split(',');
-        }
-        if (params.has('years')) {
-            state.years = params.get('years').split(',').map(y => parseInt(y));
-        }
-        if (params.has('metric')) {
-            state.metricType = params.get('metric');
-        }
-        if (params.has('causes')) {
-            state.selectedCauses = params.get('causes').split(',');
-        }
-        if (params.has('scale')) {
-            state.scaleType = params.get('scale');
-        }
-
-        // Apply state if any params were found
-        if (Object.keys(state).length > 0 && this.filterManager) {
-            this.filterManager.setState(state);
-        }
-    }
-
-    /**
      * Show loading state
      */
     showLoading() {
@@ -275,13 +253,6 @@ class MortalityDashboard {
                 </div>
             </div>
         `;
-    }
-
-    /**
-     * Hide loading state
-     */
-    hideLoading() {
-        // Loading will be replaced by chart rendering
     }
 
     /**
@@ -302,6 +273,6 @@ class MortalityDashboard {
 
 // Initialize dashboard when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Initializing Mortality Dashboard...');
+    if (CONFIG.DEBUG) console.log('Initializing Mortality Dashboard...');
     window.dashboard = new MortalityDashboard();
 });

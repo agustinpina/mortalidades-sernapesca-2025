@@ -29,8 +29,6 @@
     --chart-color-4: #009BE1; /* Sky Blue */
     --chart-color-5: #74D0C7; /* Aquamarine */
     --chart-color-6: #B8E4F2; /* Pale Baby Blue */
-    --chart-color-7: #e377c2; /* Pink (fallback) */
-    --chart-color-8: #7f7f7f; /* Gray (fallback) */
 
     /* Typography */
     --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -189,12 +187,6 @@ body {
     color: var(--color-text-primary);
 }
 
-.results-count {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-}
-
 #results-count {
     font-size: 0.875rem;
     color: var(--color-text-secondary);
@@ -322,11 +314,6 @@ body {
     overflow-y: auto;
 }
 
-/* Old selection in filter panel - keep for backwards compatibility but hidden */
-.current-selection {
-    display: none;
-}
-
 .selection-header {
     display: flex;
     justify-content: space-between;
@@ -399,13 +386,6 @@ body {
     gap: var(--spacing-lg);
 }
 
-/* Legacy support for old single-column layout */
-.filter-sections {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
-}
-
 .filter-section {
     border-bottom: 1px solid var(--color-border);
     padding-bottom: var(--spacing-lg);
@@ -415,10 +395,36 @@ body {
     border-bottom: none;
 }
 
+/* Fieldset styling for accessible form grouping */
+fieldset.filter-section {
+    border: none;
+    border-bottom: 1px solid var(--color-border);
+    margin: 0;
+    padding: 0 0 var(--spacing-lg) 0;
+}
+
+fieldset.filter-section:last-child {
+    border-bottom: none;
+}
+
 .filter-title {
     font-size: 0.875rem;
     font-weight: 600;
     color: var(--color-text-primary);
+    margin-bottom: var(--spacing-md);
+    display: block;
+}
+
+/* Support for label.filter-title */
+label.filter-title {
+    cursor: pointer;
+}
+
+/* Support for legend.filter-title */
+legend.filter-title {
+    padding: 0;
+    float: left;
+    width: 100%;
     margin-bottom: var(--spacing-md);
 }
 
@@ -786,15 +792,91 @@ body {
 }
 
 .visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border-width: 0 !important;
+}
+
+/* ===================================
+   Skip Link for Keyboard Navigation
+   =================================== */
+
+.skip-link {
     position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
+    top: -40px;
+    left: 0;
+    background: var(--color-accent);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-md);
+    text-decoration: none;
+    z-index: 1000;
+    border-radius: 0 0 4px 0;
+    font-weight: 600;
+}
+
+.skip-link:focus {
+    top: 0;
+    outline: 3px solid var(--color-text-primary);
+    outline-offset: 2px;
+}
+
+/* ===================================
+   Focus Indicators for Accessibility
+   =================================== */
+
+/* Modern focus-visible approach - visible only for keyboard navigation */
+*:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+*:focus:not(:focus-visible) {
+    outline: none;
+}
+
+*:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+/* Specific focus styles for interactive elements */
+.icon-btn:focus,
+.filter-toggle-btn:focus,
+.clear-btn:focus,
+button:focus {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+.checkbox-label:focus-within,
+.radio-label:focus-within {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    background-color: var(--color-bg-secondary);
+}
+
+input[type="checkbox"]:focus,
+input[type="radio"]:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+select:focus,
+.custom-select:focus {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
+    border-color: var(--color-accent);
+}
+
+a:focus {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
 }
 
 /* Scrollbar Styling */
