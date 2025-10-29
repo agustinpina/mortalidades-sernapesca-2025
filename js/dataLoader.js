@@ -14,7 +14,7 @@ export class DataLoader {
     async loadData() {
         try {
             // Load summary dataset
-            const summaryData = await d3.csv('../data/datos_summary.csv');
+            const summaryData = await d3.csv('data/datos_summary.csv');
 
             // Parse and enrich the data
             this.summaryData = this.parseData(summaryData);
